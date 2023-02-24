@@ -27,17 +27,7 @@ def main():
     materias = get_top_materias(tabela_clean)
 
     exportar_dados(totais, lives, materias)
-
-    # print(totais)
-    # print(lives)
-    # print(materias)
-
-
-
     
-    
-    
-
 
 if __name__ == "__main__":
     main()

@@ -60,10 +60,10 @@ def get_lives(tabela):
                 "id": video[0],
                 "titulo": video[1],
                 "data": video[2],
-                "views": video[3],
-                "tempo_exibicao": video[4],
-                "inscritos": video[5],
-                "receita": video[6]
+                "views": int(video[3]),
+                "tempo_exibicao": float(video[4]),
+                "inscritos": int(video[5]),
+                "receita": float(video[6])
             }
             lives.append(live)
         else:
@@ -80,20 +80,22 @@ def get_top_materias(tabela):
                     "id": video[0],
                     "titulo": video[1],
                     "data": video[2],
-                    "views": video[3],
-                    "tempo_exibicao": video[4],
-                    "inscritos": video[5],
-                    "receita": video[6]
+                    "views": int(video[3]),
+                    "tempo_exibicao": float(video[4]),
+                    "inscritos": int(video[5]),
+                    "receita": float(video[6])
                 }
             top_materias.append(materia)
 
     return top_materias[:5]
 
 
+
+#TODO separar partes do relatorio para poder iterar sobre valores
+# posso ter inclusive um arquivo externo com o texto base.
 def exportar_dados(totais, lives, materias):
     with open(f"./relatório[{data_atual.year}_{data_atual.month}].txt", "w") as relatorio:
         relatorio.write(f'''
-
 Relatório Fora das Pistas - {datetime.strftime(data_atual, '%B/%y')}
 
 Dados gerais:
@@ -103,6 +105,34 @@ Dados gerais:
     - Total horas assistidas:\t{int(totais['total_horas']):,}
     - Total de receita (R$):\t{int(totais['total_receita']):,}
     
+
+LIVES {datetime.strftime(data_atual, '%B %Y')}
+
+{datetime.strftime(lives[0]['data'], '%d/%m/%y')} | {lives[0]['titulo']}:
+    - Views:\t\t{lives[0]['views']:,}
+    - Pico:\t\t345
+
+{datetime.strftime(lives[1]['data'], '%d/%m/%y')} | {lives[0]['titulo']}
+    - Views:\t\t{lives[1]['views']:,}
+    - Pico:\t\t264
+
+    
+Top 5 matérias mais assistidas:
+
+{materias[0]['titulo']}:
+    {materias[0]['views']:,} views;
+
+{materias[1]['titulo']}:
+    {materias[1]['views']:,} views;
+
+{materias[2]['titulo']}:
+    {materias[2]['views']:,} views;
+
+{materias[3]['titulo']}:
+    {materias[3]['views']:,} views;
+
+{materias[4]['titulo']}:
+    {materias[4]['views']:,} views;
 
     
 ''')
