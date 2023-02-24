@@ -3,6 +3,12 @@ import locale
 from pathlib import Path
 from datetime import datetime
 
+from base_relatorio import (gravar_dados_gerais, 
+                            gravar_lives, 
+                            gravar_cabecalho,
+                            gravar_materias)
+
+
 data_atual = datetime.today()
 
 
@@ -91,51 +97,19 @@ def get_top_materias(tabela):
 
 
 
-#TODO separar partes do relatorio para poder iterar sobre valores
-# posso ter inclusive um arquivo externo com o texto base.
-def exportar_dados(totais, lives, materias):
-    with open(f"./relatório[{data_atual.year}_{data_atual.month}].txt", "w") as relatorio:
-        relatorio.write(f'''
-Relatório Fora das Pistas - {datetime.strftime(data_atual, '%B/%y')}
-
-Dados gerais:
-    
-    - Total de views:\t\t{totais['total_views']:,}
-    - Total novos inscritos:\t{totais['total_novos_inscritos']:,}
-    - Total horas assistidas:\t{int(totais['total_horas']):,}
-    - Total de receita (R$):\t{int(totais['total_receita']):,}
-    
-
-LIVES {datetime.strftime(data_atual, '%B %Y')}
-
-{datetime.strftime(lives[0]['data'], '%d/%m/%y')} | {lives[0]['titulo']}:
-    - Views:\t\t{lives[0]['views']:,}
-    - Pico:\t\t345
-
-{datetime.strftime(lives[1]['data'], '%d/%m/%y')} | {lives[0]['titulo']}
-    - Views:\t\t{lives[1]['views']:,}
-    - Pico:\t\t264
-
-    
-Top 5 matérias mais assistidas:
-
-{materias[0]['titulo']}:
-    {materias[0]['views']:,} views;
-
-{materias[1]['titulo']}:
-    {materias[1]['views']:,} views;
-
-{materias[2]['titulo']}:
-    {materias[2]['views']:,} views;
-
-{materias[3]['titulo']}:
-    {materias[3]['views']:,} views;
-
-{materias[4]['titulo']}:
-    {materias[4]['views']:,} views;
-
-    
-''')
+def gravar_relatorio(totais, lives, materias):
+    with open(f"./relatorio[{data_atual.year}_{data_atual.month}].txt", "w") as relatorio:
+        relatorio.write(gravar_cabecalho(data_atual))
+        relatorio.write(gravar_dados_gerais(totais))
+        relatorio.write("Lives do mês\n")
+        for live in lives:
+            relatorio.write(gravar_lives(live))
+        relatorio.write("\n\nTop 5 matérias:\n\n")
+        counter = 1
+        for materia in materias:
+            relatorio.write(f"#{counter} | {gravar_materias(materia)}")
+            counter += 1
+        
 
 def main():
     pass
@@ -143,7 +117,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-

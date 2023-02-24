@@ -6,7 +6,8 @@ from data_parser import (parse_data,
                          read_csv, 
                          get_lives, 
                          get_top_materias,
-                         exportar_dados)
+                         exportar_dados,
+                         gravar_relatorio)
 
 
 #TODO use the working directory as the path
@@ -26,8 +27,8 @@ def main():
     lives = get_lives(tabela_clean)
     materias = get_top_materias(tabela_clean)
 
-    exportar_dados(totais, lives, materias)
-    
+    gravar_relatorio(totais, lives, materias)
+
 
 if __name__ == "__main__":
     main()
